@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
     //Accepte les connexions depuis n'importe quelle adresse
     serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
     // Le port sur lequel la socket va écouter
-    serv_addr.sin_port = htons(5000);
+    serv_addr.sin_port = htons(6000);
     
     // Association de la socket avec la structure sockaddr
     bind(listenfd, (struct sockaddr*)&serv_addr, sizeof(serv_addr));

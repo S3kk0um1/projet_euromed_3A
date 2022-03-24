@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
     
     serv_addr.sin_family = AF_INET;
     // Le port sur lequel écoute le serveur
-    serv_addr.sin_port = htons(5000);
+    serv_addr.sin_port = htons(7000);
     
     // Copie l'adresse ip du serveur dans la structure serv_addr
     if(inet_pton(AF_INET, argv[1], &serv_addr.sin_addr)<=0)
