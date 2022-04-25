@@ -9,7 +9,7 @@
 #include <errno.h>
 #include <arpa/inet.h>
 
-void readFunc(void){
+void readFunc(int argc, char *argv[]){
 // La socket client
     int sockfd = 0;
     int  n = 0;
