@@ -9,6 +9,10 @@
 #include <errno.h>
 #include <arpa/inet.h>
 
+int main(int argc, char *argv[])
+{
+    readFunc();
+}
 
 void readFunc(int argc, char *argv[]){
 // La socket client
@@ -63,7 +67,10 @@ void readFunc(int argc, char *argv[]){
         {
             printf("\n Error : Fputs error\n");
         }
+	FILE *out_file=fopen("list","w");
+	fprintf(out_file,"nom et adress : %s,%s",recvBuff,argv[1]);
     }
+
     
     if(n < 0)
     {
@@ -91,7 +98,7 @@ void writeFunc(void){
     //Accepte les connexions depuis n'importe quelle adresse
     serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
     // Le port sur lequel la socket va écouter
-    serv_addr.sin_port = htons(6000);
+    serv_addr.sin_port = htons(7000);
     
     // Association de la socket avec la structure sockaddr
     bind(listenfd, (struct sockaddr*)&serv_addr, sizeof(serv_addr));
@@ -126,8 +133,5 @@ void writeFunc(void){
     }
 }
 
-int main(int argc, char *argv[])
-{
-    readFunc();
-}
+
 
