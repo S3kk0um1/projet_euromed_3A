@@ -81,7 +81,7 @@ void writeFunc(void){
     struct sockaddr_in serv_addr = {0};
     // Le buffer pour envoyer les données
     char sendBuff[1025] = {0};
-    
+    char sendb[1025]={0};
     // Création de la socket serveur
     listenfd = socket(AF_INET, SOCK_STREAM, 0);
     
@@ -90,7 +90,7 @@ void writeFunc(void){
     //Accepte les connexions depuis n'importe quelle adresse
     serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
     // Le port sur lequel la socket va écouter
-    serv_addr.sin_port = htons(6000);
+    serv_addr.sin_port = htons(7000);
     
     // Association de la socket avec la structure sockaddr
     bind(listenfd, (struct sockaddr*)&serv_addr, sizeof(serv_addr));
@@ -119,7 +119,7 @@ void writeFunc(void){
         else if(pid==0) { // Le processus fils
             snprintf(sendBuff, sizeof(sendBuff), "%s\n", hostname);
             write(connfd, sendBuff, strlen(sendBuff));
-            
+	    
             close(connfd);
         }
     }
