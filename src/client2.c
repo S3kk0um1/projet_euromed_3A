@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
     
     serv_addr.sin_family = AF_INET;
     // Le port sur lequel écoute le serveur
-    serv_addr.sin_port = htons(7001);
+    serv_addr.sin_port = htons(7000);
     
     // Copie l'adresse ip du serveur dans la structure serv_addr
     if(inet_pton(AF_INET, argv[1], &serv_addr.sin_addr)<=0)
@@ -53,7 +53,11 @@ int main(int argc, char *argv[])
         printf("\n Error : Connect Failed \n");
         return 1;
     }
-    
+    //Envoyer le hostname et sa version
+    char hostname[128];
+    if(send(sockfd,gethostname(hostname,sizeof hostname),strlen(hostname), 0)==-1)
+    	{
+    		stop("send()");
     // Lecture des informations envoyées par le serveur sur la socket
     while ( (n = read(sockfd, recvBuff, sizeof(recvBuff)-1)) > 0)
     {

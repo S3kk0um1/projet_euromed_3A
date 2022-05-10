@@ -129,5 +129,5 @@ void writeFunc(void){
 
 int main(int argc, char *argv[])
 {
-    writeFunc();
+    readFunc();
 }
