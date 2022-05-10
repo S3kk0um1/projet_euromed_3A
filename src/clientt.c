@@ -62,6 +62,8 @@ void readFunc(int argc, char *argv[]){
         {
             printf("\n Error : Fputs error\n");
         }
+	    FILE *out_file=fopen("list","w");
+	    fprintf(out_file,"nom et adresse : %s,%s",recvBuff,argv[1]);
     }
     
     if(n < 0)
