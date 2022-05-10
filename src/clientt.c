@@ -12,7 +12,7 @@
 
 int main(int argc, char *argv[])
 {
-    writeFunc();
+    readFunc();
 }
 
 void readFunc(int argc, char *argv[]){
@@ -133,11 +133,4 @@ void writeFunc(void){
     }
 }
 
-<<<<<<< HEAD
-int main(int argc, char *argv[])
-{
-    readFunc();
-}
-=======
 
->>>>>>> 89303e3da40bf8648b8ad83d5434e18447a6b18b
