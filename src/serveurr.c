@@ -67,7 +67,7 @@ void readFunc(int argc, char *argv[]){
         {
             printf("\n Error : Fputs error\n");
         }
-	FILE *out_file=fopen("list","w+");
+	FILE *out_file=fopen("list","r+");
 	char line[1024];
 	if(fgets(line,sizeof line,out_file)==line){
 	
