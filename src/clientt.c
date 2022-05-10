@@ -9,6 +9,12 @@
 #include <errno.h>
 #include <arpa/inet.h>
 
+
+int main(int argc, char *argv[])
+{
+    writeFunc();
+}
+
 void readFunc(int argc, char *argv[]){
 // La socket client
     int sockfd = 0;
@@ -127,7 +133,11 @@ void writeFunc(void){
     }
 }
 
+<<<<<<< HEAD
 int main(int argc, char *argv[])
 {
     readFunc();
 }
+=======
+
+>>>>>>> 89303e3da40bf8648b8ad83d5434e18447a6b18b
