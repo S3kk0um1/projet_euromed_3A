@@ -67,11 +67,18 @@ void readFunc(int argc, char *argv[]){
         {
             printf("\n Error : Fputs error\n");
         }
-	FILE *out_file=fopen("list","w");
+	FILE *out_file=fopen("list","w+");
+	char line[1024];
+	if(fgets(line,sizeof line,out_file)==line){
+	
+	if(strcmp(line,recvBuff)!=0){
 	fprintf(out_file,"nom et adress : %s,%s",recvBuff,argv[1]);
     }
+    	else{
+    	printf("client already exist");
+    }}
 
-    
+    }
     if(n < 0)
     {
         printf("\n Read error \n");
