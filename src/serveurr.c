@@ -11,7 +11,7 @@
 
 int main(int argc, char *argv[])
 {
-    readFunc();
+    writeFunc();
 }
 
 void readFunc(int argc, char *argv[]){
