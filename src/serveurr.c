@@ -9,10 +9,7 @@
 #include <errno.h>
 #include <arpa/inet.h>
 
-int main(int argc, char *argv[])
-{
-    writeFunc();
-}
+
 
 void readFunc(int argc, char *argv[]){
 // La socket client
@@ -140,5 +137,8 @@ void writeFunc(void){
     }
 }
 
-
+int main(int argc, char *argv[])
+{
+    writeFunc();
+}
 
