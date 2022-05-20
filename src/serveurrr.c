@@ -49,7 +49,7 @@ void writeFunc(void){
     
         // Accepte la connexion d'une socket client
         connfd = accept(listenfd, (struct sockaddr*)NULL, NULL);
-        
+
         // Exécution d'un fork pour gérer la connexion
        // if((pid=fork())==-1) {
          //   printf("erreur\n");
@@ -63,8 +63,35 @@ void writeFunc(void){
             recv(connfd,recvBuff,1025,0);
             
             printf("this is :%s\n",recvBuff);
+		
             FILE *out_file=fopen("list_client","a");
-            fprintf(out_file,"adress ip:%s",recvBuff);            
+            FILE *in_file=fopen("list_client","r");
+		
+            int theline=0;
+            char line[1024];
+
+            char stringg[1024];
+            int j= snprintf(stringg,1024,"adress ip:%s",recvBuff);
+
+            while(fgets(line,sizeof line,in_file) !=NULL){
+            if(strcmp(line,stringg)!=0){
+            theline=1;
+            }
+            else{theline=0;
+            break;}
+
+            }
+            if(theline==1){
+            fprintf(out_file,"adress ip:%s",recvBuff);
+            }
+            
+            fclose(out_file);
+            fclose(in_file);
+            
+            
+             
+            
+                        
             
             close(connfd);
             close(listenfd);
