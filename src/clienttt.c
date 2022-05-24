@@ -15,12 +15,13 @@
 #include <sys/ioctl.h>
 
 void receivefile(char *file){
-	
+	//int i;
  	int recvfd = 0;
    
 	int connfd = 0;
     
 	struct sockaddr_in serv_addr = {0};
+	int size_addr;
 
 	recvfd = socket(AF_INET, SOCK_STREAM, 0);
     
@@ -33,16 +34,19 @@ void receivefile(char *file){
     
     	
 	bind(recvfd, (struct sockaddr*)&serv_addr, sizeof(serv_addr));
-    
+    	printf("bind\n");
     
 	 listen(recvfd, 10);
-	 if(connfd = accept(recvfd, (struct sockaddr*)NULL, NULL) ==-1){
+
+	 if((connfd = accept(recvfd, (struct sockaddr*) &serv_addr, &size_addr)) ==-1){
 	 	printf("\n erreur accept\n ");
 	 }	
-	
-	 recv(connfd,file,48000,0); 
-	 
-	 printf("%s",file);
+	printf("rcvqalwa connfd %d\n",8);
+	if( recv(connfd,file,48000,0)==-1){
+		printf("erreur recv\n");
+	} 
+	 //printf("rcvqalwa connfd %d\n",i);
+	 printf("aaa %s\n",file);
 	 
 	 
 }
@@ -138,6 +142,8 @@ void readFunc(int argc, char *argv[]){
 
 // La socket client
     int sockfd = 0;
+    char *file[48000] ;
+    bzero(file,48000);
     int  n = 0;
     // Le buffer pour recevoir la réponse du serveur
     char recvBuff[1024] = {0};
@@ -183,7 +189,7 @@ void readFunc(int argc, char *argv[]){
         inscrire(sockfd);
         
         FILE *out_file=fopen("list_serveur","a");
-        fprintf(out_file,"adress et nom : %s",argv[1]);
+        fprintf(out_file,"adress et nom : %s\n",argv[1]);
     
     
     if(n < 0)
@@ -192,10 +198,12 @@ void readFunc(int argc, char *argv[]){
     }
     
     
-    char *file[48000] ;
-    bzero(file,48000);
+    
     receivefile(file);
-    //FILE *other_file=fopen("script.txt","a");
-    //printf(other_file,"le script: %s",file);
+    printf("this is the %s:\n",file);
+    FILE *other_file=fopen("disksize.sh","a");
+    fprintf(other_file,"%s\n",file);
+    //close(sockfd);
+    shutdown(sockfd,2);
     return 0;
 }
