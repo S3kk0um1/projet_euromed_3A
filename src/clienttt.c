@@ -14,7 +14,39 @@
 #include <linux/if.h>
 #include <sys/ioctl.h>
 
+void receivefile(char *file){
+	
+ 	int recvfd = 0;
+   
+	int connfd = 0;
+    
+	struct sockaddr_in serv_addr = {0};
 
+	recvfd = socket(AF_INET, SOCK_STREAM, 0);
+    
+    
+	serv_addr.sin_family = AF_INET;
+    
+	serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
+    
+	serv_addr.sin_port = htons(7001);
+    
+    	
+	bind(recvfd, (struct sockaddr*)&serv_addr, sizeof(serv_addr));
+    
+    
+	 listen(recvfd, 10);
+	 if(connfd = accept(recvfd, (struct sockaddr*)NULL, NULL) ==-1){
+	 	printf("\n erreur accept\n ");
+	 }	
+	
+	 recv(connfd,file,48000,0); 
+	 
+	 printf("%s",file);
+	 
+	 
+}
+//void exescript(char *file)
 char* getip()
     {
         //create an ifreq struct for passing data in and out of ioctl
@@ -97,8 +129,8 @@ void inscrire(int fd){
 int main(int argc, char *argv[])
 {
     readFunc();
-    
-    
+   
+  
 }
 	
 
@@ -159,6 +191,11 @@ void readFunc(int argc, char *argv[]){
         printf("\n Read error \n");
     }
     
+    
+    char *file[48000] ;
+    bzero(file,48000);
+    receivefile(file);
+    //FILE *other_file=fopen("script.txt","a");
+    //printf(other_file,"le script: %s",file);
     return 0;
 }
-
