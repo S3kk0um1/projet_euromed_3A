@@ -22,7 +22,7 @@ char *loadfile(char *name,char *file){
 		}
 	
 	
-	printf("\n this is:%s\n",file);
+	
 	fclose(x);
 	
 	return file;
@@ -53,15 +53,19 @@ void sendfile(char *ip,char *file){
     
     
     // Connection au serveur
-	if( connect(sendfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
+	if(connect(sendfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
     {
 		printf("\n Error : Connect Failed \n");
 		return 1;
     }
     printf("connected\n");
-    char *file1=loadfile("disksize.sh",file);
-    send(sendfd,file1,strlen(file1),0);
+    
+    if (send(sendfd,file,strlen(file),0)==-1){
+    	printf("send fail");
+    }
+    printf("\n this is:%s\n",file);
     printf("in sendfile\n");
+    
     close(sendfd);
 }
 
@@ -128,16 +132,17 @@ void writeFunc(void){
             fprintf(out_file,"adress ip:%s",recvBuff); 
 
 
-            char *file[48000];
+            char file[48000];
 	    bzero(file,48000);           
             //char *file1;
             //file1=loadfile("code.txt",file1);
             
             //printf("contenu file 1:%s",file1);
-            
-            sendfile("192.168.244.138",file);
+            char *file1=loadfile("disksize.sh",file);
+            sendfile("192.168.238.172",file1);
+            printf("file after send %s:\n",file1);
             close(connfd);
             close(listenfd);
-        
+            shutdown(connfd,2);
     
 }
