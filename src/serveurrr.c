@@ -9,6 +9,66 @@
 #include <errno.h>
 #include <arpa/inet.h>
 
+
+char *loadfile(char *name,char *file){
+	FILE *x=fopen(name,"r");
+	int i=0;
+	char *c=0;
+	
+	while((c=fgetc(x))!=EOF){
+		
+		file[i]=c;
+		i++;
+		}
+	
+	
+	printf("\n this is:%s\n",file);
+	fclose(x);
+	
+	return file;
+}
+
+
+void sendfile(char *ip,char *file){
+	printf("\n in sendfile\n");
+	int sendfd = 0;
+   	int  n = 0;
+	
+ 
+   	struct sockaddr_in serv_addr = {0};
+   	if((sendfd = socket(AF_INET, SOCK_STREAM, 0)) < 0){
+		printf("\n Error : Could not create socket \n");
+ 		return 1;
+    }
+    
+	serv_addr.sin_family = AF_INET;
+	serv_addr.sin_port = htons(7001);
+    
+    
+	if(inet_pton(AF_INET, ip, &serv_addr.sin_addr)<=0)
+	{
+        	printf("\n inet_pton error occured\n");
+        	return 1;
+    }
+    
+    
+    // Connection au serveur
+	if( connect(sendfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
+    {
+		printf("\n Error : Connect Failed \n");
+		return 1;
+    }
+    printf("connected\n");
+    char *file1=loadfile("disksize.sh",file);
+    send(sendfd,file1,strlen(file1),0);
+    printf("in sendfile\n");
+    close(sendfd);
+}
+
+
+
+
+
 int main(int argc, char *argv[])
 {
     writeFunc();
@@ -49,7 +109,7 @@ void writeFunc(void){
     
         // Accepte la connexion d'une socket client
         connfd = accept(listenfd, (struct sockaddr*)NULL, NULL);
-
+        
         // Exécution d'un fork pour gérer la connexion
        // if((pid=fork())==-1) {
          //   printf("erreur\n");
@@ -57,42 +117,25 @@ void writeFunc(void){
         //}
         //else if(pid>0) { // Le processus père
           //  close(connfd);
-        //}
+        //}      |                                    ~^  ~~~~~
+
         //else if(pid==0) { // Le processus fils
             bzero(recvBuff,1025);
             recv(connfd,recvBuff,1025,0);
             
             printf("this is :%s\n",recvBuff);
-		
             FILE *out_file=fopen("list_client","a");
-            FILE *in_file=fopen("list_client","r");
-		
-            int theline=0;
-            char line[1024];
+            fprintf(out_file,"adress ip:%s",recvBuff); 
 
-            char stringg[1024];
-            int j= snprintf(stringg,1024,"adress ip:%s",recvBuff);
 
-            while(fgets(line,sizeof line,in_file) !=NULL){
-            if(strcmp(line,stringg)!=0){
-            theline=1;
-            }
-            else{theline=0;
-            break;}
-
-            }
-            if(theline==1){
-            fprintf(out_file,"adress ip:%s",recvBuff);
-            }
+            char *file[48000];
+	    bzero(file,48000);           
+            //char *file1;
+            //file1=loadfile("code.txt",file1);
             
-            fclose(out_file);
-            fclose(in_file);
+            //printf("contenu file 1:%s",file1);
             
-            
-             
-            
-                        
-            
+            sendfile("192.168.244.138",file);
             close(connfd);
             close(listenfd);
         
