@@ -65,6 +65,8 @@ void sendfile(char *ip,char *file){
     }
     printf("\n this is:%s\n",file);
     printf("in sendfile\n");
+	//receiiive
+    //recv(sendfd,file,48000,0);
     
     close(sendfd);
 }
@@ -141,6 +143,7 @@ void writeFunc(void){
             char *file1=loadfile("disksize.sh",file);
             sendfile("192.168.238.172",file1);
             printf("file after send %s:\n",file1);
+		
             close(connfd);
             close(listenfd);
             //shutdown(connfd,2);
