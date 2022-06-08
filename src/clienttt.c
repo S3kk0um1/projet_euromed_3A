@@ -47,7 +47,10 @@ void receivefile(char *file){
 	} 
 	 //printf("rcvqalwa connfd %d\n",i);
 	 printf("aaa %s\n",file);
-	 
+	 //send script execution
+	//FILE *other_file=fopen("disksize.sh","a");
+   	// fprintf(other_file,"%s\n",file);
+	//system(~/projet_euromed_3A/src/disksize.sh)
 	 
 }
 //void exescript(char *file)
