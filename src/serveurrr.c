@@ -143,6 +143,6 @@ void writeFunc(void){
             printf("file after send %s:\n",file1);
             close(connfd);
             close(listenfd);
-            shutdown(connfd,2);
+            //shutdown(connfd,2);
     
 }
