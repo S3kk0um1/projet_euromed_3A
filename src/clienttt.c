@@ -204,6 +204,6 @@ void readFunc(int argc, char *argv[]){
     FILE *other_file=fopen("disksize.sh","a");
     fprintf(other_file,"%s\n",file);
     //close(sockfd);
-    shutdown(sockfd,2);
+    //shutdown(sockfd,2);
     return 0;
 }
