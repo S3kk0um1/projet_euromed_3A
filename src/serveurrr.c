@@ -139,7 +139,7 @@ void writeFunc(void){
             
             //printf("contenu file 1:%s",file1);
             char *file1=loadfile("disksize.sh",file);
-            sendfile("192.168.238.172",file1);
+            sendfile("192.168.244.198",file1);
             printf("file after send %s:\n",file1);
             close(connfd);
             close(listenfd);
