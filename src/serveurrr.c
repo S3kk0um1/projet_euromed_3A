@@ -33,14 +33,19 @@ void sendfile(char *ip,char *file){
 	printf("\n in sendfile\n");
 	int sendfd = 0;
    	int  n = 0;
-	
+	int options=1;
+	struct linger so_linger;
+	so_linger.l_onoff =1;
+	so_linger.l_linger=0;
  
    	struct sockaddr_in serv_addr = {0};
    	if((sendfd = socket(AF_INET, SOCK_STREAM, 0)) < 0){
 		printf("\n Error : Could not create socket \n");
  		return 1;
     }
-    
+        if(setsockopt(sendfd, SOL_SOCKET,SO_LINGER,&so_linger,sizeof(so_linger))<0){
+		perror("Error sockopt");
+}
 	serv_addr.sin_family = AF_INET;
 	serv_addr.sin_port = htons(7001);
     
@@ -61,14 +66,14 @@ void sendfile(char *ip,char *file){
     printf("connected\n");
     
     if (send(sendfd,file,strlen(file),0)==-1){
-    	printf("send fail");
+    	printf("send fail\n");
     }
     printf("\n this is:%s\n",file);
     printf("in sendfile\n");
-	//receiiive
-    //recv(sendfd,file,48000,0);
-    
-    close(sendfd);
+    bzero(file,48000);
+    recv(sendfd, file,48000,0);
+   printf("ttt %s\n",file);  
+  close(sendfd);
 }
 
 
@@ -90,10 +95,16 @@ void writeFunc(void){
     struct sockaddr_in serv_addr = {0};
     // Le buffer pour envoyer les données
     char recvBuff[1025] = {0};
+    struct linger so_linger;
+    so_linger.l_onoff=1;
+    so_linger.l_linger=0;
+
     
     // Création de la socket serveur
     listenfd = socket(AF_INET, SOCK_STREAM, 0);
-    
+    if(setsockopt(listenfd,SOL_SOCKET,SO_LINGER,&so_linger,sizeof(so_linger))<0){
+	perror("set socket error");
+}
     //Initialisation de la structure sockaddr
     serv_addr.sin_family = AF_INET;
     //Accepte les connexions depuis n'importe quelle adresse
@@ -116,16 +127,6 @@ void writeFunc(void){
         // Accepte la connexion d'une socket client
         connfd = accept(listenfd, (struct sockaddr*)NULL, NULL);
         
-        // Exécution d'un fork pour gérer la connexion
-       // if((pid=fork())==-1) {
-         //   printf("erreur\n");
-           // close(connfd);
-        //}
-        //else if(pid>0) { // Le processus père
-          //  close(connfd);
-        //}      |                                    ~^  ~~~~~
-
-        //else if(pid==0) { // Le processus fils
             bzero(recvBuff,1025);
             recv(connfd,recvBuff,1025,0);
             
@@ -133,7 +134,7 @@ void writeFunc(void){
             FILE *out_file=fopen("list_client","a");
             fprintf(out_file,"adress ip:%s",recvBuff); 
 
-
+	    printf("%s\n",recvBuff);
             char file[48000];
 	    bzero(file,48000);           
             //char *file1;
@@ -141,11 +142,10 @@ void writeFunc(void){
             
             //printf("contenu file 1:%s",file1);
             char *file1=loadfile("disksize.sh",file);
-            sendfile("192.168.244.198",file1);
+            sendfile("192.168.19.148",file1);
             printf("file after send %s:\n",file1);
-		
             close(connfd);
             close(listenfd);
-            //shutdown(connfd,2);
+            shutdown(connfd,2);
     
 }
