@@ -131,21 +131,26 @@ void writeFunc(void){
             recv(connfd,recvBuff,1025,0);
             
             printf("this is :%s\n",recvBuff);
-            FILE *out_file=fopen("list_client","r+");
+	     FILE *in_file=fopen("list_client","r");
+            FILE *out_file=fopen("list_client","a");
             char line[1025];
-	int wesh=1;
-            while(fgets(line,sizeof 1025,out_file)!=NULL){
+	    int wesh=1;
+	    char merged[1025];
+snprintf(merged,1025,"adress ip:%s\n",recvBuff);
+            while(fgets(line,1025,in_file)){
 
-            if(strcmp(line,recvBuff)!=0){
-                        wesh=1; }
+            if(strcmp(line,merged)!=0){
+                  wesh=1;
+	    }
             else{
-	    wesh=0;
-	    break;}} 
+		  bzero(line,1025);
+	    	  wesh=0;
+	    	  break;}} 
 	if(wesh){
-		fprintf(out_file,"adress ip:%s",recvBuff);}
-	else{            printf("client already exist");
-}
-	    printf("%s\n",recvBuff);
+		fprintf(out_file,"adress ip:%s\n",recvBuff);
+		printf("m9aaaawd\n");}
+	else{   printf("client already exist\n");}
+	    
             char file[48000];
 	    bzero(file,48000);           
             //char *file1;
