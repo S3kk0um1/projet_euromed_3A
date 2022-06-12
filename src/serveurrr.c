@@ -131,8 +131,14 @@ void writeFunc(void){
             recv(connfd,recvBuff,1025,0);
             
             printf("this is :%s\n",recvBuff);
-            FILE *out_file=fopen("list_client","a");
-            fprintf(out_file,"adress ip:%s",recvBuff); 
+            FILE *out_file=fopen("list_client","r+");
+            char line[1025];
+            while(fgets(line,sizeof 1025,out_file)!=NULL){
+
+            if(strcmp(line,recvBuff)!=0){
+                        fprintf(out_file,"adress ip:%s",recvBuff); }
+            else{
+            printf("client already exist");}} 
 
 	    printf("%s\n",recvBuff);
             char file[48000];
